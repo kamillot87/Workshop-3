@@ -26,7 +26,7 @@ public class UserDao {
                 PreparedStatement statement = con.prepareStatement(CREATE_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1,user.getUserName());
                 statement.setString(2,user.getEmail());
-                statement.setString(3,user.getPassword());
+                statement.setString(3,UserDao.hashPassword(user.getPassword()));
                 statement.executeUpdate();
                 ResultSet rs = statement.getGeneratedKeys(); // pobieramy ID z bazy danych które automatycznie zostało pobrane
                 while (rs.next()) {
@@ -96,7 +96,7 @@ public class UserDao {
         PreparedStatement statement = con.prepareStatement(QUERY);
         statement.setString(1,user.getUserName());
         statement.setString(2,user.getEmail());
-        statement.setString(3,user.getPassword());
+        statement.setString(3,UserDao.hashPassword(user.getPassword()));
         statement.setInt(4,user.getId());
         statement.executeUpdate();
         con.close();
